@@ -8,13 +8,14 @@ class _SearchField<T> extends StatefulWidget {
   final Future<List<T>> Function(String)? futureRequest;
   final Duration? futureRequestDelay;
   final ValueChanged<bool>? onFutureRequestLoading, mayFoundResult;
-  final SearchFieldDecoration? decoration; 
+  final SearchFieldDecoration? decoration;
+
   const _SearchField.forListData({
     super.key,
     required this.items,
     required this.onSearchedItems,
     required this.searchHintText,
-    required this.decoration, 
+    required this.decoration,
   })  : searchType = _SearchType.onListData,
         futureRequest = null,
         futureRequestDelay = null,
@@ -30,7 +31,7 @@ class _SearchField<T> extends StatefulWidget {
     required this.futureRequestDelay,
     required this.onFutureRequestLoading,
     required this.mayFoundResult,
-    required this.decoration, 
+    required this.decoration,
   }) : searchType = _SearchType.onRequestData;
 
   @override
@@ -39,7 +40,7 @@ class _SearchField<T> extends StatefulWidget {
 
 class _SearchFieldState<T> extends State<_SearchField<T>> {
   final searchCtrl = TextEditingController();
-  bool isFieldEmpty = false;
+  // bool isFieldEmpty = false;
   FocusNode focusNode = FocusNode();
   Timer? _delayTimer;
 
@@ -87,12 +88,12 @@ class _SearchFieldState<T> extends State<_SearchField<T>> {
     } catch (_) {
       widget.onFutureRequestLoading!(false);
     }
-    widget.onSearchedItems(isFieldEmpty ? widget.items : result);
+    widget.onSearchedItems(/*isFieldEmpty ? widget.items : */ result);
     widget.mayFoundResult!(result.isNotEmpty);
 
-    if (isFieldEmpty) {
-      isFieldEmpty = false;
-    }
+    // if (isFieldEmpty) {
+    //   isFieldEmpty = false;
+    // }
   }
 
   @override
@@ -102,16 +103,19 @@ class _SearchFieldState<T> extends State<_SearchField<T>> {
       child: TextField(
         focusNode: focusNode,
         style: widget.decoration?.textStyle,
-        onChanged: (val) async { 
-          if (val.isEmpty) {
-            isFieldEmpty = true;
-          } else if (isFieldEmpty) {
-            isFieldEmpty = false;
-          }
+        onChanged: (val) async {
+          // if (val.isEmpty) {
+          //   isFieldEmpty = true;
+          // } else if (isFieldEmpty) {
+          //   isFieldEmpty = false;
+          // }
 
           if (widget.searchType != null &&
-              widget.searchType == _SearchType.onRequestData &&
-              val.isNotEmpty) {
+                  widget.searchType ==
+                      _SearchType
+                          .onRequestData /*&&
+              val.isNotEmpty*/
+              ) {
             widget.onFutureRequestLoading!(true);
 
             if (widget.futureRequestDelay != null) {

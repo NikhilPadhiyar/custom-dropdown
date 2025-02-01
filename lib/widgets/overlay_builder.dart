@@ -7,6 +7,7 @@ class _OverlayBuilder extends StatefulWidget {
   final Function(bool)? visibility;
 
   const _OverlayBuilder({
+    super.key,
     required this.overlay,
     required this.child,
     this.overlayPortalController,

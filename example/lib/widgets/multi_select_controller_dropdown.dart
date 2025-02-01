@@ -30,7 +30,7 @@ class _MultiSelectControllerDropdownState
         CustomDropdown<Job>.multiSelect(
           multiSelectController: controller,
           hintText: 'Select job role',
-          items: jobItems.map((e) => AnimationDropDownItem(value: e)).toList(),
+          items: jobItems,
           decoration: CustomDropdownDecoration(
             closedSuffixIcon: InkWell(
               onTap: () {

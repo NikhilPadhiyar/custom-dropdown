@@ -18,8 +18,7 @@ class ValidationDropdown extends StatelessWidget {
         children: [
           CustomDropdown<Job>(
             hintText: 'Select job role',
-            items:
-                jobItems.map((e) => AnimationDropDownItem(value: e)).toList(),
+            items: jobItems,
             excludeSelected: false,
             onChanged: (value) {
               log('ValidationDropdown onChanged value: $value');
@@ -66,7 +65,7 @@ class MultiSelectValidationDropdown extends StatelessWidget {
         children: [
           CustomDropdown<Job>.multiSelect(
             hintText: 'Select job role',
-            items: jobItems.map((e) => AnimationDropDownItem(value: e)).toList(),
+            items: jobItems,
             onListChanged: (value) {
               log('MultiSelectValidationDropdown onChanged value: $value');
             },

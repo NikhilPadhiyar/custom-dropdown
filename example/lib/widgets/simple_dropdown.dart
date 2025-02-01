@@ -17,7 +17,7 @@ class SimpleDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomDropdown<String>(
       hintText: 'Select job role',
-      items: _list.map((e) => AnimationDropDownItem(value: e)).toList(),
+      items: _list,
       initialItem: _list[0],
       excludeSelected: false,
       onChanged: (value) {

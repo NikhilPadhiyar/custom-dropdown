@@ -40,6 +40,7 @@ class MultiSelectSearchRequestDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomDropdown<Job>.multiSelectSearchRequest(
       futureRequest: _getFakeRequestData,
+      items: jobItems,
       hintText: 'Search job role',
       onListChanged: (value) {
         log('MultiSelectSearchDropdown onChanged value: $value');

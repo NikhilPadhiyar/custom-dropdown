@@ -9,7 +9,8 @@ class _ItemsList<T> extends StatelessWidget {
   final EdgeInsets itemsListPadding, listItemPadding;
   final _ListItemBuilder<T> listItemBuilder;
   final ListItemDecoration? decoration;
-  final _DropdownType dropdownType; 
+  final _DropdownType dropdownType;
+
   const _ItemsList({
     super.key,
     required this.scrollController,
@@ -22,12 +23,11 @@ class _ItemsList<T> extends StatelessWidget {
     required this.listItemBuilder,
     required this.selectedItems,
     required this.decoration,
-    required this.dropdownType, 
+    required this.dropdownType,
   });
 
   @override
   Widget build(BuildContext context) {
-     
     return Scrollbar(
       controller: scrollController,
       child: ListView.builder(

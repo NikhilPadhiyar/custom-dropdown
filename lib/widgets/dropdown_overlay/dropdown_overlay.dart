@@ -38,7 +38,7 @@ class _DropdownOverlay<T> extends StatefulWidget {
   final _NoResultFoundBuilder? noResultFoundBuilder;
   final CustomDropdownDecoration? decoration;
   final _DropdownType dropdownType;
-  final DropdownPlacement dropdownPlacement;
+
   const _DropdownOverlay({
     Key? key,
     required this.items,
@@ -54,7 +54,6 @@ class _DropdownOverlay<T> extends StatefulWidget {
     required this.onItemSelect,
     required this.noResultFoundText,
     required this.canCloseOutsideBounds,
-    required this.dropdownPlacement,
     required this.maxLines,
     required this.overlayHeight,
     required this.dropdownType,
@@ -83,8 +82,7 @@ class _DropdownOverlay<T> extends StatefulWidget {
 }
 
 class _DropdownOverlayState<T> extends State<_DropdownOverlay<T>> {
-  bool displayOverly = true;
-  late bool displayOverlayBottom;
+  bool displayOverly = true, displayOverlayBottom = true;
   bool isSearchRequestLoading = false;
   bool? mayFoundSearchRequestResult;
   late List<T> items;
@@ -196,15 +194,12 @@ class _DropdownOverlayState<T> extends State<_DropdownOverlay<T>> {
   void initState() {
     super.initState();
     scrollController = widget.itemsScrollCtrl ?? ScrollController();
-    displayOverlayBottom = widget.dropdownPlacement == DropdownPlacement.auto ||
-        widget.dropdownPlacement == DropdownPlacement.bottom;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final render1 = key1.currentContext?.findRenderObject() as RenderBox;
       final render2 = key2.currentContext?.findRenderObject() as RenderBox;
       final screenHeight = MediaQuery.of(context).size.height;
       double y = render1.localToGlobal(Offset.zero).dy;
-      if (screenHeight - y < render2.size.height &&
-          widget.dropdownPlacement == DropdownPlacement.auto) {
+      if (screenHeight - y < render2.size.height) {
         displayOverlayBottom = false;
         setState(() {});
       }
@@ -342,24 +337,26 @@ class _DropdownOverlayState<T> extends State<_DropdownOverlay<T>> {
                         },
                         child: Theme(
                           data: Theme.of(context).copyWith(
-                            scrollbarTheme:
-                                decoration?.overlayScrollbarDecoration ??
-                                    ScrollbarThemeData(
-                                      thumbVisibility: WidgetStateProperty.all(
-                                        true,
-                                      ),
-                                      thickness: WidgetStateProperty.all(5),
-                                      radius: const Radius.circular(4),
-                                      thumbColor: WidgetStateProperty.all(
-                                        Colors.grey[300],
-                                      ),
-                                    ),
+                            scrollbarTheme: decoration
+                                    ?.overlayScrollbarDecoration ??
+                                ScrollbarThemeData(
+                                  thumbVisibility: MaterialStateProperty.all(
+                                    true,
+                                  ),
+                                  thickness: MaterialStateProperty.all(5),
+                                  radius: const Radius.circular(4),
+                                  thumbColor: MaterialStateProperty.all(
+                                    Colors.grey[300],
+                                  ),
+                                ),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              if (!widget.hideSelectedFieldWhenOpen)
+                              if (!widget.hideSelectedFieldWhenOpen &&
+                                  widget.dropdownType ==
+                                      _DropdownType.singleSelect)
                                 GestureDetector(
                                   behavior: HitTestBehavior.opaque,
                                   onTap: () {
@@ -394,6 +391,7 @@ class _DropdownOverlayState<T> extends State<_DropdownOverlay<T>> {
                                     ),
                                   ),
                                 ),
+                              const SizedBox(height: 12),
                               if (onSearch &&
                                   widget.searchType == _SearchType.onListData)
                                 if (!widget.hideSelectedFieldWhenOpen)
@@ -533,7 +531,44 @@ class _DropdownOverlayState<T> extends State<_DropdownOverlay<T>> {
                                       ),
                                     )
                               else
-                                items.length > 4 ? Expanded(child: list) : list
+                                items.length > 4 ? Expanded(child: list) : list,
+                              if (!widget.hideSelectedFieldWhenOpen &&
+                                  widget.dropdownType ==
+                                      _DropdownType.multipleSelect)
+                                GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () {
+                                    setState(() => displayOverly = false);
+                                  },
+                                  child: Padding(
+                                    padding: widget.headerPadding ??
+                                        _defaultHeaderPadding,
+                                    child: Row(
+                                      children: [
+                                        if (widget.decoration?.prefixIcon !=
+                                            null) ...[
+                                          widget.decoration!.prefixIcon!,
+                                          const SizedBox(width: 12),
+                                        ],
+                                        Expanded(
+                                          child: switch (widget.dropdownType) {
+                                            _DropdownType.singleSelect =>
+                                              selectedItem != null
+                                                  ? headerBuilder(context)
+                                                  : hintBuilder(context),
+                                            _DropdownType.multipleSelect =>
+                                              selectedItems.isNotEmpty
+                                                  ? headerListBuilder(context)
+                                                  : hintBuilder(context),
+                                          },
+                                        ),
+                                        const SizedBox(width: 12),
+                                        decoration?.expandedSuffixIcon ??
+                                            _defaultOverlayIconUp,
+                                      ],
+                                    ),
+                                  ),
+                                ),
                             ],
                           ),
                         ),

@@ -38,6 +38,7 @@ class _DropdownOverlay<T> extends StatefulWidget {
   final _NoResultFoundBuilder? noResultFoundBuilder;
   final CustomDropdownDecoration? decoration;
   final _DropdownType dropdownType;
+  final bool isHeaderDisplayInBottom;
 
   const _DropdownOverlay({
     Key? key,
@@ -75,6 +76,7 @@ class _DropdownOverlay<T> extends StatefulWidget {
     required this.listItemBuilder,
     required this.headerListBuilder,
     required this.noResultFoundBuilder,
+    required this.isHeaderDisplayInBottom,
   });
 
   @override
@@ -355,8 +357,7 @@ class _DropdownOverlayState<T> extends State<_DropdownOverlay<T>> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               if (!widget.hideSelectedFieldWhenOpen &&
-                                  widget.dropdownType ==
-                                      _DropdownType.singleSelect)
+                                  !widget.isHeaderDisplayInBottom)
                                 GestureDetector(
                                   behavior: HitTestBehavior.opaque,
                                   onTap: () {
@@ -390,8 +391,9 @@ class _DropdownOverlayState<T> extends State<_DropdownOverlay<T>> {
                                       ],
                                     ),
                                   ),
-                                ),
-                              const SizedBox(height: 12),
+                                )
+                              else
+                                const SizedBox(height: 12),
                               if (onSearch &&
                                   widget.searchType == _SearchType.onListData)
                                 if (!widget.hideSelectedFieldWhenOpen)
@@ -533,8 +535,7 @@ class _DropdownOverlayState<T> extends State<_DropdownOverlay<T>> {
                               else
                                 items.length > 4 ? Expanded(child: list) : list,
                               if (!widget.hideSelectedFieldWhenOpen &&
-                                  widget.dropdownType ==
-                                      _DropdownType.multipleSelect)
+                                  widget.isHeaderDisplayInBottom)
                                 GestureDetector(
                                   behavior: HitTestBehavior.opaque,
                                   onTap: () {

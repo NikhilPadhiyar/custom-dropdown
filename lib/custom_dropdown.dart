@@ -7,12 +7,12 @@ import 'package:flutter/scheduler.dart';
 
 export 'custom_dropdown.dart';
 
+part 'models/controllers.dart';
 // models
 part 'models/custom_dropdown_decoration.dart';
 part 'models/custom_dropdown_list_filter.dart';
 part 'models/disabled_decoration.dart';
 part 'models/list_item_decoration.dart';
-part 'models/controllers.dart';
 part 'models/search_field_decoration.dart';
 // utils
 part 'utils/signatures.dart';
@@ -179,6 +179,7 @@ class CustomDropdown<T> extends StatefulWidget {
   final _SearchType? _searchType;
 
   final _DropdownType _dropdownType;
+  final bool isHeaderDisplayInBottom;
 
   CustomDropdown({
     super.key,
@@ -206,6 +207,7 @@ class CustomDropdown<T> extends StatefulWidget {
     this.hideSelectedFieldWhenExpanded = false,
     this.excludeSelected = true,
     this.enabled = true,
+    this.isHeaderDisplayInBottom = false,
     this.disabledDecoration,
   })  : assert(
           initialItem == null || controller == null,
@@ -267,6 +269,7 @@ class CustomDropdown<T> extends StatefulWidget {
     this.enabled = true,
     this.disabledDecoration,
     this.closeDropDownOnClearFilterSearch = false,
+    this.isHeaderDisplayInBottom = false,
   })  : assert(
           initialItem == null || controller == null,
           'Only one of initialItem or controller can be specified at a time',
@@ -326,6 +329,7 @@ class CustomDropdown<T> extends StatefulWidget {
     this.enabled = true,
     this.disabledDecoration,
     this.closeDropDownOnClearFilterSearch = false,
+    this.isHeaderDisplayInBottom = false,
   })  : assert(
           initialItem == null || controller == null,
           'Only one of initialItem or controller can be specified at a time',
@@ -365,6 +369,7 @@ class CustomDropdown<T> extends StatefulWidget {
     this.listItemPadding,
     this.enabled = true,
     this.disabledDecoration,
+    this.isHeaderDisplayInBottom = false,
   })  : assert(
           initialItems == null || multiSelectController == null,
           'Only one of initialItems or controller can be specified at a time',
@@ -427,6 +432,7 @@ class CustomDropdown<T> extends StatefulWidget {
     this.enabled = true,
     this.disabledDecoration,
     this.closeDropDownOnClearFilterSearch = false,
+    this.isHeaderDisplayInBottom = false,
   })  : assert(
           initialItems == null || multiSelectController == null,
           'Only one of initialItems or controller can be specified at a time',
@@ -488,6 +494,7 @@ class CustomDropdown<T> extends StatefulWidget {
     this.enabled = true,
     this.disabledDecoration,
     this.closeDropDownOnClearFilterSearch = false,
+    this.isHeaderDisplayInBottom = false,
   })  : assert(
           initialItems == null || multiSelectController == null,
           'Only one of initialItems or controller can be specified at a time',
@@ -673,6 +680,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
                   searchRequestLoadingIndicator:
                       widget.searchRequestLoadingIndicator,
                   dropdownType: widget._dropdownType,
+                  isHeaderDisplayInBottom: widget.isHeaderDisplayInBottom,
                 );
               },
               child: (showCallback) {

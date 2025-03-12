@@ -76,7 +76,11 @@ class _SearchFieldState<T> extends State<_SearchField<T>> {
   void onClear() {
     if (searchCtrl.text.isNotEmpty) {
       searchCtrl.clear();
-      widget.onSearchedItems(widget.items);
+      if (widget.searchType == _SearchType.onRequestData) {
+        searchRequest('');
+      } else {
+        widget.onSearchedItems(widget.items);
+      }
     }
   }
 
